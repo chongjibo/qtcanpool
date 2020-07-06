@@ -18,12 +18,13 @@
  **
 ****************************************************************************/
 #include "qcanpool.h"
+#include "qcanpool_p.h"
 #include <QColor>
 #include <QTextCodec>
 
-#if defined(Q_OS_WIN32)
+#if defined(Q_OS_WIN32) && !defined(Q_CC_MSVC)
 #include <Windows.h>
-#include <ShellAPI.h>
+#include <shellapi.h>
 #else
 #include <QDir>
 #include <QDesktopServices>
@@ -34,7 +35,7 @@ QColor QCanpool::argbToColor(const QString &argb)
 {
     QColor color;
     bool ok = true;
-    QRgb rgba = argb.toLongLong(&ok, 16);
+    QRgb rgba = argb.toUInt(&ok, 16);
 
     if (ok) {
         color = QColor::fromRgba(rgba);
@@ -58,14 +59,18 @@ QString QCanpool::colorToArgb(const QColor &color)
 void QCanpool::showInExplorer(QString fileName)
 {
     Q_UNUSED(fileName);
-#if defined(Q_OS_WIN32)
-#if !defined(Q_CC_MSVC)
+#if defined(Q_OS_WIN32) && !defined(Q_CC_MSVC)
     QString argsFile = QString("/select, %1").arg(fileName.replace("/", "\\"));
     QTextCodec *codec = QTextCodec::codecForName("GB18030");
     ShellExecuteA(nullptr, "open", "explorer.exe", codec->fromUnicode(argsFile).constData(), nullptr, SW_SHOWDEFAULT);
-#endif
 #else
     QDesktopServices::openUrl(QUrl(QFileInfo(fileName).absolutePath(), QUrl::TolerantMode));
 #endif
+}
+
+void QCanpool::setSysSettings(const QString &organization, const QString &application)
+{
+    QCanpoolPrivate::g_settingsOrganization = organization;
+    QCanpoolPrivate::g_settingsApplication  = application;
 }
 

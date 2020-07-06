@@ -11,7 +11,7 @@ class CLicCreateDlg : public QDialog , public Ui::liccreatebase
 {
 	Q_OBJECT
 public:
-	CLicCreateDlg(QWidget * parent = 0, Qt::WindowFlags f = 0);
+    CLicCreateDlg(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	~CLicCreateDlg();
 	
 	void Init();

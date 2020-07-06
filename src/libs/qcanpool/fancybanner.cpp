@@ -40,7 +40,7 @@ class FancyBannerIndicator : public QWidget
 {
     Q_OBJECT
 public:
-    explicit FancyBannerIndicator(QWidget *parent = 0);
+    explicit FancyBannerIndicator(QWidget *parent = nullptr);
     ~FancyBannerIndicator();
 
     void select(bool selected);
@@ -179,17 +179,16 @@ void FancyBannerArrow::paintEvent(QPaintEvent *event)
     int margin = 2;
 
     switch (m_type) {
-    case Right: {
-        painter.drawLine(QPointF(margin, margin), QPointF(this->width() - margin, this->height() / 2));
-        painter.drawLine(QPointF(margin, this->height() - margin), QPointF(this->width() - margin, this->height() / 2));
-    }
-    break;
-
-    case Left: {
-        painter.drawLine(QPointF(this->width() - margin, margin), QPointF(margin, this->height() / 2));
-        painter.drawLine(QPointF(this->width() - margin, this->height() - margin), QPointF(margin, this->height() / 2));
-    }
-    break;
+        case Right: {
+            painter.drawLine(QPointF(margin, margin), QPointF(this->width() - margin, this->height() / 2));
+            painter.drawLine(QPointF(margin, this->height() - margin), QPointF(this->width() - margin, this->height() / 2));
+            break;
+        }
+        case Left: {
+            painter.drawLine(QPointF(this->width() - margin, margin), QPointF(margin, this->height() / 2));
+            painter.drawLine(QPointF(this->width() - margin, this->height() - margin), QPointF(margin, this->height() / 2));
+            break;
+        }
     }
 
     QWidget::paintEvent(event);

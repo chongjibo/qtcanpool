@@ -1,21 +1,21 @@
 RESOURCES += \
-    liccreator.qrc
+    $$PWD/liccreator.qrc
 
 FORMS += \
-    licaddsoftbase.ui \
-    licconfigsoftbase.ui \
-    liccreatebase.ui
+    $$PWD/licaddsoftbase.ui \
+    $$PWD/licconfigsoftbase.ui \
+    $$PWD/liccreatebase.ui
 
 RC_FILE += \
-    liccreator.rc
+    $$PWD/liccreator.rc
 
 HEADERS += \
-    clicaddsoftdlg.h \
-    clicconfigsoftdlg.h \
-    cliccreatedlg.h
+    $$PWD/clicaddsoftdlg.h \
+    $$PWD/clicconfigsoftdlg.h \
+    $$PWD/cliccreatedlg.h
 
 SOURCES += \
-    clicaddsoftdlg.cpp \
-    clicconfigsoftdlg.cpp \
-    cliccreatedlg.cpp \
-    main.cpp
+    $$PWD/clicaddsoftdlg.cpp \
+    $$PWD/clicconfigsoftdlg.cpp \
+    $$PWD/cliccreatedlg.cpp \
+    $$PWD/main.cpp

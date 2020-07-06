@@ -28,7 +28,7 @@ class QCANPOOL_SHARED_EXPORT FancyDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit FancyDialog(QWidget *parent = nullptr, Qt::WindowFlags f = 0);
+    explicit FancyDialog(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
     ~FancyDialog();
 
     void setCentralWidget(QWidget *w);
@@ -36,6 +36,13 @@ public:
     void setTitleBarHeight(int height);
 
     void addAdditionalControl(QAction *action);
+
+    void setFixedSize(const QSize &s);
+    void setFixedSize(int w, int h);
+    void setFixedWidth(int w);
+    void setFixedHeight(int h);
+
+    void setWindowFlags(Qt::WindowFlags type);
 
 protected:
     virtual void paintEvent(QPaintEvent *event);

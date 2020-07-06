@@ -22,7 +22,6 @@
 #include "chartsmode.h"
 #include "custommode.h"
 #include "menumode.h"
-#include "paintmode.h"
 
 #include "qcanpool/fancytabwidget.h"
 #include "qcanpool/fancytabbar.h"
@@ -36,9 +35,6 @@
 
 #include "skindialog.h"
 #include "theme.h"
-
-#include "licensedialog.h"
-#include "license/nrlicense.h"
 
 #define COMPANY_NAME    QString::fromUtf8("科技有限公司")
 
@@ -80,24 +76,6 @@ MainWindow *MainWindow::instance()
 {
     return m_instance;
 }
-
-void MainWindow::checkLicense()
-{
-    int nret = CheckLicense("fancydemo");
-    if(nret > 0)
-        return;
-
-    LicenseDialog dlg(this);
-    if(dlg.exec() == QDialog::Accepted)
-    {
-        ;
-    }
-    else
-    {
-        exit(1);
-    }
-}
-
 
 void MainWindow::createWindow()
 {
@@ -325,11 +303,9 @@ void MainWindow::createModeBar()
 
     m_pChartsMode = new ChartsMode();
     m_pCustomMode = new CustomMode();
-    m_pPaintMode = new PaintMode();
     m_pMenuMode = new MenuMode();
 
     m_modeManager->objectAdded(m_pCustomMode);
-    m_modeManager->objectAdded(m_pPaintMode);
     m_modeManager->objectAdded(m_pChartsMode);
     m_modeManager->objectAdded(m_pMenuMode);
 

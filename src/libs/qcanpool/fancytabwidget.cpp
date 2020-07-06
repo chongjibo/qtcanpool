@@ -26,6 +26,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QStackedLayout>
+#include <QIcon>
 
 class FancyTabWidgetPrivate : public QObject
 {
@@ -66,26 +67,26 @@ FancyTabWidgetPrivate::~FancyTabWidgetPrivate()
 void FancyTabWidgetPrivate::updateTabBarPosition()
 {
     switch (m_pos) {
-    case FancyTabWidget::North:
-        m_tabBar->setDirection(FancyTabBar::Horizontal);
-        m_layout->setDirection(QBoxLayout::TopToBottom);
-        break;
+        case FancyTabWidget::North:
+            m_tabBar->setDirection(FancyTabBar::Horizontal);
+            m_layout->setDirection(QBoxLayout::TopToBottom);
+            break;
 
-    case FancyTabWidget::South:
-        m_tabBar->setDirection(FancyTabBar::Horizontal);
-        m_layout->setDirection(QBoxLayout::BottomToTop);
-        break;
+        case FancyTabWidget::South:
+            m_tabBar->setDirection(FancyTabBar::Horizontal);
+            m_layout->setDirection(QBoxLayout::BottomToTop);
+            break;
 
-    case FancyTabWidget::West:
-        m_tabBar->setDirection(FancyTabBar::Vertical);
-        m_layout->setDirection(QBoxLayout::LeftToRight);
-        break;
+        case FancyTabWidget::West:
+            m_tabBar->setDirection(FancyTabBar::Vertical);
+            m_layout->setDirection(QBoxLayout::LeftToRight);
+            break;
 
-    case FancyTabWidget::East:
-        m_tabBar->setDirection(FancyTabBar::Vertical);
-        m_layout->setDirection(QBoxLayout::RightToLeft);
-        break;
-        /*default:*/
+        case FancyTabWidget::East:
+            m_tabBar->setDirection(FancyTabBar::Vertical);
+            m_layout->setDirection(QBoxLayout::RightToLeft);
+            break;
+            /*default:*/
     }
 }
 
@@ -184,17 +185,38 @@ FancyTabWidget::~FancyTabWidget()
     delete d;
 }
 
-void FancyTabWidget::insertTab(int index, QWidget *tab, const QIcon &icon,
+int FancyTabWidget::addTab(QWidget *widget, const QString &label, bool hasMenu)
+{
+    return insertTab(-1, widget, label, hasMenu);
+}
+
+int FancyTabWidget::addTab(QWidget *widget, const QIcon &icon, const QString &label, bool hasMenu)
+{
+    return insertTab(-1, widget, icon, label, hasMenu);
+}
+
+int FancyTabWidget::insertTab(int index, QWidget *widget, const QString &label, bool hasMenu)
+{
+    return insertTab(index, widget, QIcon(), label, hasMenu);
+}
+
+int FancyTabWidget::insertTab(int index, QWidget *widget, const QIcon &icon,
                                const QString &label, bool hasMenu)
 {
-    d->m_stack->insertWidget(index, tab);
+    if (!widget)
+        return -1;
+    index = d->m_stack->insertWidget(index, widget);
     d->m_tabBar->insertTab(index, icon, label, hasMenu);
+
+    return index;
 }
 
 void FancyTabWidget::removeTab(int index)
 {
-    d->m_stack->removeWidget(d->m_stack->widget(index));
-    d->m_tabBar->removeTab(index);
+    if (QWidget *w = d->m_stack->widget(index)) {
+        d->m_stack->removeWidget(w);
+        d->m_tabBar->removeTab(index);
+    }
 }
 
 void FancyTabWidget::setTabEnabled(int index, bool enable)
@@ -209,11 +231,9 @@ bool FancyTabWidget::isTabEnabled(int index) const
 
 void FancyTabWidget::setTabVisible(int index, bool visible)
 {
-    d->m_tabBar->setTabVisible(index, visible);
-
-    if (index >= 0 && index < d->m_stack->count()) {
-        QWidget *w = d->m_stack->widget(index);
+    if (QWidget *w = d->m_stack->widget(index)) {
         w->setHidden(!visible);
+        d->m_tabBar->setTabVisible(index, visible);
     }
 }
 
@@ -308,27 +328,23 @@ QSplitter *FancyTabWidget::addCornerWidget(QWidget *widget, FancyTabWidget::Corn
     QSplitter *splitter = nullptr;
 
     switch (position) {
-    case Left: {
-        int count = d->m_leftSplitter->count();
-        d->m_leftSplitter->insertWidget(count - 1, widget);
-        splitter = d->m_leftSplitter;
-    }
-    break;
-
-    case Top:
-        d->m_topCorner->addWidget(widget);
-        break;
-
-    case Right:
-        d->m_rightSplitter->addWidget(widget);
-        splitter = d->m_rightSplitter;
-        break;
-
-    case Bottom:
-        d->m_bottomSplitter->addWidget(widget);
-        splitter = d->m_bottomSplitter;
-        break;
-        /*default:*/
+        case Left: {
+            int count = d->m_leftSplitter->count();
+            d->m_leftSplitter->insertWidget(count - 1, widget);
+            splitter = d->m_leftSplitter;
+            break;
+        }
+        case Top:
+            d->m_topCorner->addWidget(widget);
+            break;
+        case Right:
+            d->m_rightSplitter->addWidget(widget);
+            splitter = d->m_rightSplitter;
+            break;
+        case Bottom:
+            d->m_bottomSplitter->addWidget(widget);
+            splitter = d->m_bottomSplitter;
+            break;
     }
 
     return splitter;
