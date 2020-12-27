@@ -2353,7 +2353,7 @@ NR_EXTERN LICENSE_EXPORT NR_INT NR_API RegisterLicense(
 
     // encrypt license data
     if (EncryptStr(pSrcData, (NR_UINT)strlen(pSrcData), pDestData, NR_CONFIG_FILE_SIZE) != NR_OK) {
-        NR_LOG_ERROR("EncryptStr() failed, srcLen=%u", strlen(pSrcData));
+        NR_LOG_ERROR("EncryptStr() failed, srcLen=%llu", strlen(pSrcData));
         NR_FREE(pSrcData);
         NR_FREE(pDestData);
         return NR_ERROR;
