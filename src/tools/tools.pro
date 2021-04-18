@@ -1,4 +1,7 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
-    liccreator
+
+!macx {
+SUBDIRS += liccreator
+}

@@ -3,12 +3,15 @@ include(../../qtproject.pri)
 TEMPLATE  = subdirs
 
 SUBDIRS =   \
-    qcanpool   \
-    license \
+    qcanpool \
     qlite \
     aggregation \
     extensionsystem \
     utils
+
+!macx {
+SUBDIRS += license
+}
 
 for(l, SUBDIRS) {
     QTC_LIB_DEPENDS =

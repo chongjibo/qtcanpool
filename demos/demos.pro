@@ -7,5 +7,8 @@ SUBDIRS = \
     qtqrcode \
     litedemo \
     controldemo \
-    licenseDemo \
     qtoffice
+
+!macx {
+SUBDIRS += licenseDemo
+}
